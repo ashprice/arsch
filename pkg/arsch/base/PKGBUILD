@@ -1,6 +1,6 @@
 # Maintainer: A.M.Price <amprice@mailbox.org>
 pkgname=arsch-base
-pkver=0.0.1
+pkgver=0.0.1
 pkgrel=1
 pkgdesc="Base system configuration for arsch system"
 arch=('any')
@@ -29,7 +29,6 @@ depends=(
 	'man-db'
 	'mdadm'
 	'nano'
-	'netctl'
 	'pacman'
 	'pciutils'
 	'perl'
