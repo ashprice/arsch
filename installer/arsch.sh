@@ -3,6 +3,7 @@
 
 set -uo pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
+REPO_URL="https://raw.githubusercontent.com/ashprice/arsch/master/x86_64"
 MIRRORLIST_URL="https://www.archlinux.org/mirrorlist/?country=GB&protocol=https&use_mirror_status=on"
 
 wifi-menu
@@ -73,7 +74,7 @@ mount "${part_boot}" /mnt/boot
 cat >> /etc/pacman.conf <<EOF
 [arsch]
 SigLevel = Optional TrustAll
-Server = https://github.com/ashprice/arsch
+Server = https://raw.githubusercontent.com/ashprice/arsch/master/x86_64
 EOF
 
 pacstrap /mnt arsch-desktop
@@ -83,7 +84,7 @@ echo "${hostname}" > /mnt/etc/hostname
 cat >>/mnt/etc/pacman.conf <<EOF
 [arsch]
 SigLevel = Optional TrustAll
-Server =  https://github.com/ashprice/arsch
+Server = https://raw.githubusercontent.com/ashprice/arsch/master/x86_64
 EOF
 
 arch-chroot /mnt bootctl install
@@ -99,7 +100,12 @@ initrd /initramfs-linux.img
 options root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
+echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
 
+arch-chroot /mnt useradd -mU -s /usr/bin/bash -G wheel "$user"
+
+echo "$user:$password" | chpasswd --root /mnt
+echo "$root:$password" | chpasswd --root /mnt
 
 # below assumes admin user is setup
 dialog --infobox "Refreshing Arch keyring..." 4 40
