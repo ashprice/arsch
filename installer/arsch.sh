@@ -103,6 +103,8 @@ arch-chroot /mnt useradd -mU -s /usr/bin/bash -G wheel "$user"
 echo "$user:$password" | chpasswd --root /mnt
 echo "root:$password" | chpasswd --root /mnt
 
+arch-chroot /mnt /scripts/chrooted.sh
+
 # below assumes admin user is setup
 arch-chroot /mnt
 
