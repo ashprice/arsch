@@ -103,31 +103,9 @@ arch-chroot /mnt useradd -mU -s /usr/bin/bash -G wheel "$user"
 echo "$user:$password" | chpasswd --root /mnt
 echo "root:$password" | chpasswd --root /mnt
 
-arch-chroot /mnt /scripts/chrooted.sh
-
-# below assumes admin user is setup
-arch-chroot /mnt
-
-MIRRORLIST_URL="https://www.archlinux.org/mirrorlist/?country=GB&protocol=https&use_mirror_status=on"
 curl -s "$MIRRORLIST_URL" | \
 	sed -e 's/^#Server/Server/' -e '/^#/d' | \
-	rankmirrors -n 5 - > /etc/pacman.d/mirrorlist
-pacman --noconfirm -Sy archlinux-keyring >/dev/null 2>&1
-dialog --infobox "Installing \`basedevel\` and \`git\`." 5 70
-pacman --noconfirm --needed -S base-devel git >/dev/null 2>&1
-[ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers
-newperms "%wheel ALL=(ALL) NOPASSWD: ALL"
-grep "^Color" /etc/pacman.conf >/dev/null || sed -i "s/^#Color/Color/" /etc/pacman.conf
-grep "ILoveCandy" /etc/pacman.conf >/dev/null || sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
-sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
-[ -z "$aurhelper" ] && aurhelper="yay"
-[ -f "/usr/bin/$aurhelper" ] || (
-dialog --infobox "Installing \"$aurhelper\"..." 4 50
-cd /tmp || exit
-rm -rf /tmp/"$aurhelper"*
-curl -s0 https://aur.archlinux.org/cgit/aur.git/snapshot/"$aurhelper".tar.gz &&
-	sudo -u "$name" tar -xvf "$aurhelper".tar.gz >/dev/null 2>&1 &&
-	cd "$aurhelper" &&
-	sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
-cd /tmp || return
+	rankmirrors -n 5 - > /mnt/etc/pacman.d/mirrorlist
+
+arch-chroot /mnt /scripts/chrooted.sh
 
