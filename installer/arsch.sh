@@ -34,11 +34,11 @@ clear
 
 timedatectl set-ntp true
 
-umount --force -R /mnt 2>/dev/null || /bin/true
+umount --force -R /mnt || /bin/true
 
 wipefs -af ${device}
-wipefs -f -a ${device} &>/dev/null
-dd if=/dev/zero of=${device} bs=1M count=1024 &>/dev/null
+wipefs -f -a ${device}
+dd if=/dev/zero of=${device} bs=1M count=1024
 
 parted --script "${device}" mklabel gpt \
 	mkpart ESP fat32 1Mib 256Mib \
@@ -70,9 +70,9 @@ swapon /dev/mapper/vg0-swap
 mount /dev/mapper/vg0-root /mnt
 mkdir /mnt/boot
 mount "${part_boot}" /mnt/boot
-mkdir -p /mnt/boot/loader/entries &>/dev/null
+mkdir -p /mnt/boot/loader/entries
 
-pacman -Syy &>/dev/null
+pacman -Syy
 pacstrap /mnt base pacman-contrib mkinitcpio lvm2 sudo intel-ucode
 genfstab -pU /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
@@ -83,7 +83,7 @@ cat <<EOF > /mnt/etc/hosts
 EOF
 mkdir /mnt/scripts &>/dev/null
 cp *.sh /mnt/scripts &>/dev/null
-cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/ &>/dev/null
+cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/
 
 cat <<EOF > /mnt/boot/loader/loader.conf
 default arch
