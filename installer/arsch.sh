@@ -33,6 +33,23 @@ clear
 
 timedatectl set-ntp true
 
+umount -R /mnt 2>/dev/null
+lvno=$(pvdisplay -c|grep "/dev/$1"|wc -l)
+
+if [ $lvno -eq 0 ] ; then
+    echo "no LVMs to remove"
+else
+    VG=vg0
+    if [ -n VG ] ; then
+        lvs|grep ${VG}|awk -F\ '{print $1}'|xargs -n1 -I{} -- lvremove -y {}
+        vgremove -y -ff ${VG}
+    fi
+    pvremove -y -f ${device}
+fi
+wipefs -af ${device}
+wipefs -f -a ${device} &>/dev/null
+dd if=/dev/zero of=${device} bs=1M count=1024 &>/dev/null
+
 parted --script "${device}" mklabel gpt \
 	mkpart ESP fat32 1Mib 256Mib \
 	set 1 boot on \
