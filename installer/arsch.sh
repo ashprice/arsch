@@ -53,7 +53,7 @@ dd if=/dev/zero of=${device} bs=1M count=1024 &>/dev/null
 parted --script "${device}" mklabel gpt \
 	mkpart ESP fat32 1Mib 256Mib \
 	set 1 boot on \
-	mkpart primary ext4 256MIB 100%
+	mkpart primary ext4 256MIB 100% || /bin/true
 
 part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_crypt="$(ls ${device}* | grep -E "^${device}p?2$")"
