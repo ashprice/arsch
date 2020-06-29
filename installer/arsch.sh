@@ -83,7 +83,7 @@ mount "${part_boot}" /mnt/boot
 mkdir -p /mnt/boot/loader/entries &>/dev/null
 
 pacman -Syy &>/dev/null
-pacstrap /mnt base pacman-contrib mkinitcpio lvm2 sudo intel-ucode &>/dev/null
+pacstrap /mnt base pacman-contrib mkinitcpio lvm2 sudo intel-ucode
 genfstab -pU /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 mkdir /mnt/scripts &>/dev/null
