@@ -63,12 +63,17 @@ swapon /dev/mapper/vg0-swap
 mount /dev/mapper/vg0-root /mnt
 mkdir /mnt/boot
 mount "${part_boot}" /mnt/boot
+mkdir -p /mnt/boot/loader/entries &>/dev/null
 
-pacstrap /mnt base base-devel git neovim linux-headers
-genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
+pacman -Syy &>/dev/null
+pacstrap /mnt base pacman-contrib mkinitcpio lvm2 sudo intel-ucode &>/dev/null
+genfstab -pU /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
+mkdir /mnt/scripts &>/dev/null
+cp *.sh /mnt/scripts &>/dev/null
+cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/ &>/dev/null
 
-arch-chroot /mnt bootctl install
+arch-chroot /mnt /scripts/chrooted.sh
 
 cat <<EOF > /mnt/boot/loader/loader.conf
 default arch
