@@ -76,11 +76,14 @@ pacman -Syy &>/dev/null
 pacstrap /mnt base pacman-contrib mkinitcpio lvm2 sudo intel-ucode
 genfstab -pU /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
+cat <<EOF > /mnt/etc/hosts
+127.0.0.1 localhost
+::1 localhost
+127.0.1.1 $(echo $hostname).local $(echo $hostname)
+EOF
 mkdir /mnt/scripts &>/dev/null
 cp *.sh /mnt/scripts &>/dev/null
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/ &>/dev/null
-
-arch-chroot /mnt /scripts/chrooted.sh
 
 cat <<EOF > /mnt/boot/loader/loader.conf
 default arch
