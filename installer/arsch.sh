@@ -33,15 +33,15 @@ clear
 
 timedatectl set-ntp true
 
-umount -R /mnt 2>/dev/null
-lvno=$(pvdisplay -c|grep "/dev/$1"|wc -l)
+umount --force -R /mnt 2>/dev/null || /bin/true
+lvno=$(pvdisplay -c|grep "/dev/"|wc -l)
 
 if [ $lvno -eq 0 ] ; then
     echo "no LVMs to remove"
 else
     VG=vg0
     if [ -n VG ] ; then
-        lvs|grep ${VG}|awk -F\ '{print $1}'|xargs -n1 -I{} -- lvremove -y {}
+        lvs|grep ${VG}|awk -F: '{print $1}'|xargs -n1 -I{} -- lvremove -y {}
         vgremove -y -ff ${VG}
     fi
     pvremove -y -f ${device}
