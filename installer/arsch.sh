@@ -31,15 +31,12 @@ devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)
 device=$(dialog --stdout --menu "Select installation disk" 0 0 0 ${devicelist}) || exit 1
 clear
 
-exec 1> >(tee "stdout.log")
-exec 2> >(tee "stderr.log")
-
 timedatectl set-ntp true
 
 parted --script "${device}" mklabel gpt \
-	mkpart ESP fat32 1Mib 129Mib \
+	mkpart ESP fat32 1Mib 256Mib \
 	set 1 boot on \
-	mkpart primary ext4 129MIB 100%
+	mkpart primary ext4 256MIB 100%
 
 part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_crypt="$(ls ${device}* | grep -E "^${device}p?2$")"
