@@ -41,7 +41,7 @@ if [ $lvno -eq 0 ] ; then
 else
     VG=vg0
     if [ -n VG ] ; then
-        lvs|grep ${VG}|awk -F\  '{print $1}'|xargs -n1 -I{} -- lvremove -y {} || /bin/true
+        lvs|grep ${VG}|awk -F\  '{print $1}'|xargs -n1 -I{} -- lvremove --forece -y {} || /bin/true
         vgremove -y -ff ${VG}
     fi
     pvremove -y -f ${device}
