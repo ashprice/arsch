@@ -5,7 +5,8 @@ set -uo pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 MIRRORLIST_URL="https://www.archlinux.org/mirrorlist/?country=GB&protocol=https&use_mirror_status=on"
 
-pacman -Sy --noconfirm pacman-contrib dialog
+pacman -Sy --noconfirm pacman-contrib dialog archlinux-keyring
+pacman-key --refresh-keys
 
 curl -s "$MIRRORLIST_URL" | \
 	sed -e 's/^#Server/Server/' -e '/^#/d' | \
