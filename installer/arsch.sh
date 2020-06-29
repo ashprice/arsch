@@ -42,7 +42,7 @@ else
     VG=vg0
     if [ -n VG ] ; then
         lvs|grep ${VG}|awk -F\  '{print $1}'|xargs -n1 -I{} -- lvremove --force -y {} || /bin/true
-        vgremove -y -ff ${VG}
+        vgremove -y -f ${VG}
     fi
     pvremove -y -f ${device}
 fi
