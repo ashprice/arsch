@@ -55,22 +55,69 @@ PCIE_ASPM_ON_BAT=powersave
 EOF
 tlp start
 su vofan
-yay -S --noconfirm abook adobe-source-han-mono-otc-fonts adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts adobe-source-serif-pro-fonts python-pyalsa pulseaudio pulseaudio-alsa android-tools arandr archiso-git arch-wiki-lite atool aurutils-git bashdb bat bc biber borg breeze-icons cmatrix colorz coreutils cronie cryptsetup cuetools device-mapper devtools dhcpcd dialog discord dmenu dmraid downgrade dunst dupeguru-git e2fsprogs ed efivar exfat-utils falkon ffmpeg-compat-57 ffmpeg-git ffnvcodec-headers firefox fish fzf gentium-plus-font gettext ghostscript gimp gnome-keyring gtk-theme-arc-gruvbox-git htop-vim-git httrack hwinfo i3blocks i3-gaps i3lock i3status ibus ibus-grc-beta-code-git ibus-m17n ibus-mozc ibus-table ibus-table-others imagemagick iputils keyman kmfl-keyboard-eurolatin kmfl-keyboard-ipa less libopusenc libxft-bgra links logrotate lolcat lostfiles lrzip lsd lshw lsof lxappearance maim man-db man-pages mbsync-git mdadm mediainfo mpc mpv-git msmtp mtpfs mu-git musescore ncdu ncmpcpp neofetch neomutt neovim neovim-remote nerd-fonts-arimo notmuch noto-fonts noto-fonts-emoji ntfs-3g openexr openssh openssl-1.0 otf-libertinus p7zip pacgraph pacutils parted pass pdfgrep pdftk picard picom pigz pkgfile pulsemixer python-colorthief python-pywal python-ueberzug-git qemu raid-check-systemd redshift-minimal reflector reiserfsprogs ripgrep scrot sed simple-mtpfs smu s-nail speedtest-cli spotify sprunge srm st-luke-git strace sxhkd sxiv tar task-spooler texinfo texlive-bibtexextra texlive-bin texlive-core texlive-fontsextra texlive-humanities texlive-langjapanese texlive-latexextra texlive-music texlive-pictures texlive-science thinkfan thunar tllocalmgr-git tm-git tor torbrowser-launcher transmission-cli tree ttf-adobe-source-fonts ttf-brill ttf-dejavu ttf-fira-mono ttf-font-awesome ttf-gentium-basic ttf-mplus ttf-sil-fonts udiskie unclutter-xfixes-git unrar urlscan-git urlview-git urxvt-perls usb_modeswitch vifm vnstat vulkan-headers vulkan-intel w3m wget x265 xawtv xcape xcb-proto xclip xdotool xf86-video-fbdev xf86-video-intel xf86-video-vesa xfsprogs  xorg-fonts-encodings xorgproto xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xev xorg-xinit xorg-xwininfo xssstate xwallpaper yadm-git youtube-dl youtube-viewer-git zathura zathura-djvu zathura-pdf-mupdf
+yay -S --noconfirm abook adobe-source-han-mono-otc-fonts adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts adobe-source-serif-pro-fonts python-pyalsa pulseaudio pulseaudio-alsa android-tools arandr archiso-git arch-wiki-lite atool aurutils-git bashdb bat bc biber borg breeze-icons cmatrix colorz coreutils cronie cryptsetup cuetools device-mapper devtools dhcpcd dialog discord dmenu dmraid downgrade dunst dupeguru-git e2fsprogs ed efivar exfat-utils falkon ffmpeg-compat-57 ffmpeg-git ffnvcodec-headers firefox fish fzf gentium-plus-font gettext ghostscript gimp gnome-keyring gtk-theme-arc-gruvbox-git htop-vim-git httrack hwinfo i3blocks i3-gaps i3lock i3status ibus ibus-grc-beta-code-git ibus-m17n ibus-mozc ibus-table ibus-table-others imagemagick iputils keyman kmfl-keyboard-eurolatin kmfl-keyboard-ipa less libopusenc libxft-bgra links logrotate lolcat lostfiles lrzip lsd lshw lsof lxappearance maim man-db man-pages mbsync-git mdadm mediainfo mpc mpv-git msmtp mtpfs mu-git musescore ncdu ncmpcpp neofetch neomutt neovim neovim-remote nerd-fonts-arimo notmuch noto-fonts noto-fonts-emoji ntfs-3g openexr openssh openssl-1.0 otf-libertinus p7zip pacgraph pacutils parted pass pdfgrep pdftk picard picom pigz pkgfile pulsemixer python-colorthief python-pywal python-ueberzug-git qemu raid-check-systemd redshift-minimal reflector reiserfsprogs ripgrep scrot sed simple-mtpfs smu s-nail speedtest-cli spotify sprunge srm st-luke-git strace sxhkd sxiv tar task-spooler texinfo texlive-bibtexextra texlive-bin texlive-core texlive-fontsextra texlive-humanities texlive-langjapanese texlive-latexextra texlive-music texlive-pictures texlive-science thinkfan thunar tllocalmgr-git tm-git tor torbrowser-launcher transmission-cli tree ttf-adobe-source-fonts ttf-brill ttf-dejavu ttf-fira-mono ttf-font-awesome ttf-gentium-basic ttf-mplus ttf-sil-fonts udiskie unclutter-xfixes-git unrar urlscan-git urlview-git urxvt-perls usb_modeswitch vifm vnstat vulkan-headers vulkan-intel w3m wget x265 xawtv xcape xcb-proto xclip xdotool xf86-video-fbdev xf86-video-intel xf86-video-vesa xfsprogs xorg-fonts-encodings xorgproto xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xev xorg-xinit xorg-xwininfo xssstate xwallpaper yadm-git youtube-dl youtube-viewer-git zathura zathura-djvu zathura-pdf-mupdf
 tllocalmgr install langsci
 tllocalmgr install langsci-avm
 exit
-echo << EOF > /etc/pulse/daemon.conf
+cat << EOF > /etc/pulse/daemon.conf
+daemonize = no
 high-priority = yes
 nice-level = -15
 realtime-scheduling = yes
 realtime-priority = 9
-resample-method = speex-float-5
+resample-method = soxr-vhq
 avoid-resampling = yes
 default-sample-format = float32le
-default-sample-rate = 44100
+default-sample-rate = 46000
 alternate-sample-rate = 96000
 default-sample-channels = 2
 default-channel-map = front-left,front-right
 deferred-volume-safety-margin-usec = 1
+EOF
+cat << EOF > /etc/asound.conf
+pcm.!default {
+    type plug
+    slave.pcm hw
+}
+EOF
+rm /etc/fonts/local.conf
+cat << EOF > /etc/fonts/local.conf
+<?xml version='1.0'?>
+<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
+<fontconfig>
+    <alias>
+        <family>monospace</family>
+        <prefer>
+            <family>Libertinus Mono</family>
+            <family>Source Code Pro</family>
+            <family>Source Han Mono</family>
+            <family>Noto Sans Mono</family>
+            <family>Noto Color Emoji</family>
+        </prefer>
+    </alias>
+    <alias>
+        <family>sans-serif</family>
+        <prefer>
+            <family>Libertinus Sans</family>
+            <family>Source Sans Pro</family>
+            <family>Source Han Sans</family>
+            <family>Noto Sans</family>
+            <family>Noto Color Emoji</family>
+        </prefer>
+    </alias>
+    <alias>
+        <family>serif</family>
+        <prefer>
+            <family>Libertinus Serif</family>
+            <family>Charis SIL</family>
+            <family>Source Serif Pro</family>
+            <family>Source Han Serif</family>
+            <family>Junicode</family>
+            <family>Scheherazade</family>
+            <family>Noto Serif</family>
+            <family>Noto Color Emoji</family>
+        </prefer>
+    </alias>
+</fontconfig>
 EOF
 
