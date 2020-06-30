@@ -89,23 +89,12 @@ cat <<EOF > /mnt/boot/loader/loader.conf
 default arch
 EOF
 
-cat <<EOF > /mnt/boot/loader/entries/arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /intel-ucode.img
-initrd /initramfs-linux.img
-options root=PARTUUID=$(blkid -s PARTUUID -o /dev/mapper/vg0-root) quiet loglevel=3 rd.udev.log_priority=3 rd.systemd.show_status=auto vga=current fan_control=1 rw
-EOF
-
 echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
 
 arch-chroot /mnt useradd -mU -s /usr/bin/bash -G wheel "$user"
 echo "$user:$password" | chpasswd --root /mnt
 echo "root:$password" | chpasswd --root /mnt
-
-curl -s "$MIRRORLIST_URL" | \
-	sed -e 's/^#Server/Server/' -e '/^#/d' | \
-	rankmirrors -n 5 - > /mnt/etc/pacman.d/mirrorlist
+echo "$user ALL=(ALL:ALL) ALL' >> /etc/sudoers"
 
 arch-chroot /mnt /scripts/chrooted.sh
 
