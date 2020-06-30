@@ -73,7 +73,7 @@ mount "${part_boot}" /mnt/boot
 mkdir -p /mnt/boot/loader/entries
 
 pacman -Syy
-pacstrap /mnt base pacman-contrib mkinitcpio lvm2 sudo intel-ucode
+pacstrap /mnt base base-devel pacman-contrib mkinitcpio lvm2 sudo intel-ucode
 genfstab -pU /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 cat <<EOF > /mnt/etc/hosts
