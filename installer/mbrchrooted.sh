@@ -116,6 +116,8 @@ cat << EOF > /etc/fonts/local.conf
             <family>Scheherazade</family>
             <family>Noto Serif</family>
             <family>Noto Color Emoji</family>
+            <family>Ezra SIL</family>
+            <family>Estrangelo Edessa</family>
         </prefer>
     </alias>
 </fontconfig>
