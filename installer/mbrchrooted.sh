@@ -9,7 +9,7 @@ systemctl enable NetworkManager
 echo 'HOOKS=(base systemd autodetect sd-vconsole modconf block keyboard keymap sd-encrypt sd-lvm2 fsck filesystems)' >> /etc/mkinitcpio.conf
 rot=$(cryptsetup status luks|grep device|awk '{print $2}')
 cryptrot="$(blkid $rot|awk '{print $2}'|sed 's/^.\{6\}//'|sed 's/.\{1\}$//')"
-sed -i "s@GRUB_CMDLINE_LINUX_DEFAULT=\"logleveel=3 quiet\"@GRUB_CMDLINE_LINUX_DEFAULT=\"cryptdevice=${rot}:luks root=/dev/mapper/vg0-root loglevel=3 quiet\"@" /etc/default/grub
+sed -i "s@GRUB_CMDLINE_LINUX_DEFAULT=\"logleveel=3 quiet\"@GRUB_CMDLINE_LINUX_DEFAULT=\"rd.luks.uuid=${cryptrot} rd.luks.options=discard root=/dev/mapper/vg0-root loglevel=3 quiet rd.udev.log_priority=3 rd.systemd.show_status=auto vga=current fan_control=1\"@" /etc/default/grub
 sed -i "s/^#GRUB_DISABLE_LINUX_UUID/GRUB_DISABLE_LINUX_UUID/" /etc/default/grub
 
 echo 'KEYMAP=gb' >> /etc/vconsole.conf
@@ -120,4 +120,4 @@ cat << EOF > /etc/fonts/local.conf
     </alias>
 </fontconfig>
 EOF
-
+# check why mdadm no work
