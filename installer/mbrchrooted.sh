@@ -20,6 +20,7 @@ echo 'MAKEFLAGS="-j$(nproc)"' >> /etc/makepkg.conf
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 hwclock --systohc
+locale-gen
 
 echo 'store /dev/md127 none luks,timeout=180' >> /etc/crypttab
 echo '/dev/mapper/vg1-store /store ext4 rw,relatime,noauto,x-systemd.automount 0 2' >> /etc/fstab
