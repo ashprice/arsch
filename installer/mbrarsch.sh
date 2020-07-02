@@ -86,6 +86,8 @@ cp *.sh /mnt/scripts &>/dev/null
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/
 
 echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
+echo "en_GB.UTF-8 UTF-8" > /mnt/etc/locale.gen
+echo "en_GB ISO-8859-1" > /mnt/etc/locale.gen
 
 arch-chroot /mnt useradd -mU -s /usr/bin/bash -G wheel "$user"
 echo "$user:$password" | chpasswd --root /mnt
