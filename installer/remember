@@ -1,0 +1,55 @@
+add to script:
+/etc/profile:
+export GTK_IM_MODULE=xim
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+export XIM_PROGRAM=/usr/bin/ibus-daemon -drx
+
+Transfer gpg keys
+Generate ssh keys and login to git
+Make Firefox tweaks:
+- Midnight Lizard
+- Vimium
+- ublock origin
+- Anti-Adblock killer
+- HTTPS everywhere
+- Decentraleyes
+- ClearURLs
+- Privacy possum
+- Terms of service addon
+- Cookie autodelete
+Slowly incorporate so as not to break shit:
+https://github.com/ghacksuserjs/ghacks-user.js
+Aboutconfig:
+media.peerconnection.enabled = false
+media.peerconnection.turn.disable = true
+media.peerconnection.use_document_iceservers = false
+media.peerconnection.video.enabled = false
+media.peerconnection.identity.timeout = 1
+
+privacy.resistFingerprinting = true
+privacy.trackingprotection.fingerprinting.enabled = true
+privacy.trackingprotection.cryptomining.enabled = true
+privacy.trackingprotection.enabled = true
+browser.send_pings = false
+browser.urlbar.speculativeConnect.enabled = false
+dom.event.clipboardevents.enabled = false
+media.eme.enabled = false
+media.gmp-widevinecdm.enabled = false
+media.navigator.enabled = false
+network.cookie.cookieBehavior = 1
+network.http.referer.XOriginPolicy = 2
+network.http.referer.XOriginTrimmingPolicy = 2
+webgl.disabled = true
+browser.sessionstore.privacy_level = 2
+beacon.enabled = false
+browser.safebrowsing.downloads.remote.enabled = false
+network.dns.disablePrefetch = true
+network.dns.disablePrefetchFromHTTPS = true
+network.predictor.enabled = false
+network.predictor.enable-prefetch = false
+network.prefetch-next = false
+network.IDN_show_punycode = true
+
+Install Vim plugged
+ln -s /media/storage/spotify_cache $HOME/.cache/spotify

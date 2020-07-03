@@ -126,4 +126,7 @@ EOF
 cat << EOF > /etc/mdadm.conf
 ARRAY /dev/md/raid metadata=1.2 name=archport:raid UUID=bb84d9c3:d3d66579:2da69ae7:1118ad79
 EOF
-
+cat << /home/vofan/things-to-do-manually
+Install kmfl-keyboard-eurolatin and kmfl-keyboard-ipa
+yadm clone
+EOF
